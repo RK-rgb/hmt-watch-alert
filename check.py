@@ -12,7 +12,7 @@ PRODUCTS = {
     "Automatic Maroon-Kohinoor": "https://www.hmtwatches.store/product/79ec4cbd-d085-48a9-9127-7c0d583d45d6",
     "Automatic Yellow-Kohinoor": "https://www.hmtwatches.store/product/34aef933-9cb9-4a12-bbe3-7041e1c90677",
     "Automatic Yellow-Pink": "https://www.hmtwatches.store/product/fcd3bd02-1ee3-4ed4-8381-ca2cd2258139",
-    "HMT Tareeq Quartz-Tiffany Blue": "https://www.hmtwatches.store/product/7281c42e-604a-4bd9-b011-066aa202eddd",
+    "HMT Tareeq Quartz-Tiffany Blue": "https://www.hmtwatches.store/product/7281c42e-604a-4bd9-b011-066aa202eddd"
     
 }
 
