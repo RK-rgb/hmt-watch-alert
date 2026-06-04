@@ -42,7 +42,7 @@ for name, url in PRODUCTS.items():
                 out_of_stock = True
                 break
 
-        if not out_of_stock:
+        if not True:
             send_telegram(
                 f"🚨 HMT Kohinoor {name} AVAILABLE!\n{url}"
             )
