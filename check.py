@@ -48,10 +48,14 @@ with sync_playwright() as p:
 
             page.wait_for_timeout(3000)
 
-            content = page.content().lower()
+            buttons = page.locator("button").all_text_contents()
 
-            add_to_cart = "add to cart" in content
-            buy_now = "buy now" in content
+            print(f"{name}: {buttons}")
+
+            buttons = [b.strip().lower() for b in buttons]
+
+            add_to_cart = "add to cart" in buttons
+            buy_now = "buy now" in buttons
 
             in_stock = add_to_cart and buy_now
 
