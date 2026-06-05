@@ -41,10 +41,10 @@ for name, url in PRODUCTS.items():
 
         soup = BeautifulSoup(page.text, "html.parser")
 
-        buttons = [
-            button.get_text(strip=True).lower()
-            for button in soup.find_all("button")
-        ]
+        print("Length:", len(page.text))
+print("Contains Out Of Stock:", "out of stock" in page.text.lower())
+print("Contains Add To Cart:", "add to cart" in page.text.lower())
+print("Contains Buy Now:", "buy now" in page.text.lower())
 
         add_to_cart = "add to cart" in buttons
         buy_now = "buy now" in buttons
