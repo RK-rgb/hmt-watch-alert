@@ -46,6 +46,12 @@ with sync_playwright() as p:
                 timeout=60000
             )
 
+            print(page.title())
+
+            page.screenshot(path=f"{name}.png", full_page=True)
+
+            print(page.content()[:5000])
+            
             page.wait_for_timeout(3000)
 
             buttons = page.locator("button").all_text_contents()
