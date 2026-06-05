@@ -13,7 +13,6 @@ PRODUCTS = {
     "Automatic Yellow - Kohinoor": "https://www.hmtwatches.store/product/34aef933-9cb9-4a12-bbe3-7041e1c90677",
     "Automatic Yellow - Pink": "https://www.hmtwatches.store/product/fcd3bd02-1ee3-4ed4-8381-ca2cd2258139",
     "HMT Tareeq Quartz - Tiffany Blue": "https://www.hmtwatches.store/product/7281c42e-604a-4bd9-b011-066aa202eddd",
-    "Automatic Yellow - Pink": "https://www.hmtwatches.store/product/fcd3bd02-1ee3-4ed4-8381-ca2cd2258139",
     "HMT Janata Automatic - White": "https://www.hmtwatches.store/product/44333eb5-32ae-4189-85ab-209a8a451249",
     "HMT Stellar DASS 04 - Tiffany Blue": "https://www.hmtwatches.store/product/b8fbabdb-a49d-4e5d-92c6-71eda34c9382",
     "HMT Pilot Automatic Black": "https://www.hmtwatches.store/product/5cb806d1-3afa-4511-80b4-49e457c1cbab"
@@ -42,18 +41,19 @@ for name, url in PRODUCTS.items():
 
         soup = BeautifulSoup(page.text, "html.parser")
 
-        out_of_stock = False
+        buttons = [
+            button.get_text(strip=True).lower()
+            for button in soup.find_all("button")
+        ]
 
-        for button in soup.find_all("button"):
-            text = button.get_text(strip=True).lower()
+        add_to_cart = "add to cart" in buttons
+        buy_now = "buy now" in buttons
 
-            if text == "out of stock":
-                out_of_stock = True
-                break
+        in_stock = add_to_cart and buy_now
 
-        if not out_of_stock:
+        if in_stock:
             send_telegram(
-                f"🚨 HMT Kohinoor {name} AVAILABLE!\n{url}"
+                f"🚨 HMT WATCH AVAILABLE 🚨\n\n{name}\n\n{url}"
             )
             print(f"{name}: AVAILABLE")
 
