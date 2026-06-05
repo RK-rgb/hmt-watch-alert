@@ -1,6 +1,6 @@
+from playwright.sync_api import sync_playwright
 import requests
 import os
-from bs4 import BeautifulSoup
 
 BOT_TOKEN = os.environ["BOT_TOKEN"]
 CHAT_ID = os.environ["CHAT_ID"]
@@ -28,39 +28,53 @@ def send_telegram(msg):
         timeout=20
     )
 
-for name, url in PRODUCTS.items():
+with sync_playwright() as p:
 
-    try:
-        page = requests.get(
-            url,
-            headers={
-                "User-Agent": "Mozilla/5.0"
-            },
-            timeout=20
-        )
+    browser = p.chromium.launch(
+        headless=True
+    )
 
-        soup = BeautifulSoup(page.text, "html.parser")
+    page = browser.new_page()
 
-        print("Length:", len(page.text))
-print("Contains Out Of Stock:", "out of stock" in page.text.lower())
-print("Contains Add To Cart:", "add to cart" in page.text.lower())
-print("Contains Buy Now:", "buy now" in page.text.lower())
+    for name, url in PRODUCTS.items():
 
-        add_to_cart = "add to cart" in buttons
-        buy_now = "buy now" in buttons
+        try:
 
-        in_stock = add_to_cart and buy_now
-
-        print(f"{name}: Buttons found -> {buttons}")
-
-        if in_stock:
-            send_telegram(
-                f"🚨 HMT WATCH AVAILABLE 🚨\n\n{name}\n\n{url}"
+            page.goto(
+                url,
+                wait_until="networkidle",
+                timeout=60000
             )
-            print(f"{name}: AVAILABLE")
 
-        else:
-            print(f"{name}: Out of Stock")
+            page.wait_for_timeout(3000)
 
-    except Exception as e:
-        print(f"{name}: ERROR - {e}")
+            content = page.content().lower()
+
+            add_to_cart = "add to cart" in content
+            buy_now = "buy now" in content
+
+            in_stock = add_to_cart and buy_now
+
+            print(
+                f"{name}: "
+                f"add_to_cart={add_to_cart}, "
+                f"buy_now={buy_now}"
+            )
+
+            if in_stock:
+
+                send_telegram(
+                    f"🚨 HMT WATCH AVAILABLE 🚨\n\n{name}\n\n{url}"
+                )
+
+                print(f"{name}: AVAILABLE")
+
+            else:
+
+                print(f"{name}: Out of Stock")
+
+        except Exception as e:
+
+            print(f"{name}: ERROR - {e}")
+
+    browser.close()
