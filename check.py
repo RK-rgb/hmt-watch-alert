@@ -51,6 +51,8 @@ for name, url in PRODUCTS.items():
 
         in_stock = add_to_cart and buy_now
 
+        print(f"{name}: Buttons found -> {buttons}")
+
         if in_stock:
             send_telegram(
                 f"🚨 HMT WATCH AVAILABLE 🚨\n\n{name}\n\n{url}"
