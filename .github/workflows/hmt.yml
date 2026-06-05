@@ -18,7 +18,9 @@ jobs:
         with:
           python-version: "3.11"
 
-      - run: pip install requests beautifulsoup4
+      - run: pip install playwright requests
+
+      - run: playwright install chromium
 
       - run: python check.py
         env:
